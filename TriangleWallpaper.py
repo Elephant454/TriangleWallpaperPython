@@ -1,14 +1,20 @@
 #!/usr/bin/python
+import argparse
 import math, numpy, random
 from PIL import Image, ImageDraw
 
-original = Image.open('original.jpg')
+parser = argparse.ArgumentParser(description='Turn an image into triangles.')
+parser.add_argument("file", type=open)
+args = parser.parse_args()
+
+print(args.file.name)
+original = Image.open(args.file.name)
 new = Image.new("RGB", (original.width, original.height))
 
 width = original.width
 height = original.height
 #targetVerts = 16384
-targetVerts = 1024
+targetVerts = 4096
 xVerts = (round(math.sqrt((width*targetVerts)/height))-1)
 yVerts = (round(math.sqrt((height*targetVerts)/width))-1)
 
@@ -50,4 +56,8 @@ def randomizeTessellation(verts):
 
 
 drawTriangleFan(randomizeTessellation(genTessellation()))
+gen = genTessellation()
+#for i in range(0, 10):
+#    gen = randomizeTessellation(gen)
+#drawTriangleFan(gen)
 new.save("output.jpg", "JPEG")
