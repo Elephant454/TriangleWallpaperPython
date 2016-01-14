@@ -2,7 +2,7 @@
 import math, numpy, random
 from PIL import Image, ImageDraw
 
-original = Image.open('clouds.jpg')
+original = Image.open('original.jpg')
 new = Image.new("RGB", (original.width, original.height))
 
 width = original.width
