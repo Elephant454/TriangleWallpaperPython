@@ -3,8 +3,9 @@ import argparse
 import math, numpy, random
 from PIL import Image, ImageDraw
 
-parser = argparse.ArgumentParser(description='Turn an image into triangles.')
-parser.add_argument("file", type=open)
+parser = argparse.ArgumentParser(description="Turn an image into triangles.")
+parser.add_argument("file", type=open, help="image file to turn into triangles")
+parser.add_argument("-v", type=int, default=2048, metavar="verticies", help="number of verticies that the picture should aim to have")
 args = parser.parse_args()
 
 original = Image.open(args.file.name)
@@ -12,8 +13,7 @@ new = Image.new("RGB", (original.width, original.height))
 
 width = original.width
 height = original.height
-#targetVerts = 16384
-targetVerts = 2048
+targetVerts = args.v
 xVerts = (round(math.sqrt((width*targetVerts)/height))-1)
 yVerts = (round(math.sqrt((height*targetVerts)/width))-1)
 
@@ -59,4 +59,4 @@ gen = genTessellation()
 #for i in range(0, 10):
 #    gen = randomizeTessellation(gen)
 #drawTriangleFan(gen)
-new.save("output.jpg", "JPEG")
+new.save("output." + original.filename.rpartition('.')[2], original.format)
