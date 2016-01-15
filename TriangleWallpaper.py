@@ -7,14 +7,13 @@ parser = argparse.ArgumentParser(description='Turn an image into triangles.')
 parser.add_argument("file", type=open)
 args = parser.parse_args()
 
-print(args.file.name)
 original = Image.open(args.file.name)
 new = Image.new("RGB", (original.width, original.height))
 
 width = original.width
 height = original.height
 #targetVerts = 16384
-targetVerts = 4096
+targetVerts = 2048
 xVerts = (round(math.sqrt((width*targetVerts)/height))-1)
 yVerts = (round(math.sqrt((height*targetVerts)/width))-1)
 
