@@ -9,7 +9,6 @@ parser.add_argument("-v", type=int, default=2048, metavar="verticies", help="num
 args = parser.parse_args()
 
 original = Image.open(args.file.name)
-new = Image.new("RGB", (original.width, original.height))
 
 width = original.width
 height = original.height
@@ -29,7 +28,8 @@ def genTessellation():
 def drawTriangleFan(verts):
     index = 0
     colors = list(original.resize([(xVerts-1)*2,yVerts-1], Image.LANCZOS).getdata())
-    draw = ImageDraw.Draw(new)
+    result = Image.new("RGB", (original.width, original.height))
+    draw = ImageDraw.Draw(result)
     for i in range(0, len(verts)-xVerts):
         if (i+1)%xVerts == 0: continue
         draw.polygon([verts[i], verts[i+xVerts], verts[i+xVerts+1]], fill=colors[index])
@@ -37,6 +37,7 @@ def drawTriangleFan(verts):
         draw.polygon([verts[i], verts[i+1], verts[i+xVerts+1]], fill=colors[index])
         index += 1
     del draw
+    return(result)
 
 def randomizeTessellation(verts):
     result = []
@@ -54,9 +55,9 @@ def randomizeTessellation(verts):
     return(result)
 
 
-drawTriangleFan(randomizeTessellation(genTessellation()))
-gen = genTessellation()
+#gen = genTessellation()
 #for i in range(0, 10):
 #    gen = randomizeTessellation(gen)
 #drawTriangleFan(gen)
-new.save("output." + original.filename.rpartition('.')[2], original.format)
+
+drawTriangleFan(randomizeTessellation(genTessellation())).save("output." + original.filename.rpartition('.')[2], original.format)
