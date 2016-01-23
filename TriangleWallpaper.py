@@ -9,10 +9,12 @@ parser.add_argument("-v", type=int, default=2048, metavar="verticies", help="num
 args = parser.parse_args()
 
 original = Image.open(args.file.name)
+#original = Image.open("fenstack.jpg")
 
 width = original.width
 height = original.height
 targetVerts = args.v #The number of verticies to aim for. The actual number may be less.
+#targetVerts = 2048 #The number of verticies to aim for. The actual number may be less.
 xVerts = (round(math.sqrt((width*targetVerts)/height))-1) #The number of verticies in one row in order to be spread evenly
 yVerts = (round(math.sqrt((height*targetVerts)/width))-1) #The number of verticies in each column in order to be spread evenly
 
@@ -54,10 +56,36 @@ def randomizeTessellation(verts):
             result.append((verts[i][0] - (width/(xVerts-1)/2) + (width/(xVerts-1))*random.random()/2, verts[i][1] - (height/(yVerts-1)/2) + (height/(yVerts-1))*random.random()/2))
     return(result)
 
+def distance(a, b):
+    return(math.sqrt(((b[0]-a[0])**2) + ((b[1]-a[1])**2)))
+
+def pullTessellation(center, verts):
+    result = []
+    for i in range(0, len(verts)):
+        if i<xVerts:
+            result.append(verts[i])
+        elif i>len(verts)-xVerts:
+            result.append(verts[i])
+        elif i%xVerts == 0:
+            result.append(verts[i])
+        elif (i+1)%xVerts == 0:
+            result.append(verts[i])
+        else:
+
+            print("X: " + (str)(verts[i][0]) + " + (" + (str)(verts[center][0]) + " - " + (str)(verts[i][0]) + ") = " + (str)(verts[i][0] + (verts[center][0] - verts[i][0])/3))
+            print("Y: " + (str)(verts[i][1]) + " + (" + (str)(verts[center][1]) + " - " + (str)(verts[i][1]) + ") = " + (str)(verts[i][1] + (verts[center][1] - verts[i][1])/3))
+            result.append((verts[i][0] + (verts[center][0] - verts[i][0]), verts[i][1] + (verts[center][1] - verts[i][1])))
+
+    return(result)
+
 
 #gen = genTessellation()
 #for i in range(0, 10):
 #    gen = randomizeTessellation(gen)
 #drawTriangleFan(gen)
+
+#tes = genTessellation()
+#center = round(random.random()*len(tes))
+#drawTriangleFan(pullTessellation(center, tes)).show()
 
 drawTriangleFan(randomizeTessellation(genTessellation())).save("output." + original.filename.rpartition('.')[2], original.format)
