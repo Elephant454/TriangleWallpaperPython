@@ -30,7 +30,7 @@ def genTessellation(width, height, targetVerts):
     return(verts)
 
 def getImageColors(image): #get a list of colors from an image
-    return(list(original.resize([(xVerts-1)*2,yVerts-1], Image.LANCZOS).getdata()))
+    return(list(image.resize([(xVerts-1)*2,yVerts-1], Image.LANCZOS).getdata()))
 
 def drawTriangleFan(verts, colors):
     index = 0
