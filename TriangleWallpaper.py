@@ -18,8 +18,10 @@ targetVerts = args.v #The number of verticies to aim for. The actual number may 
 xVerts = (round(math.sqrt((width*targetVerts)/height))-1) #The number of verticies in one row in order to be spread evenly
 yVerts = (round(math.sqrt((height*targetVerts)/width))-1) #The number of verticies in each column in order to be spread evenly
 
-def genTessellation():
+def genTessellation(width, height, targetVerts):
     verts = []
+    xVerts = (round(math.sqrt((width*targetVerts)/height))-1) #The number of verticies in one row in order to be spread evenly
+    yVerts = (round(math.sqrt((height*targetVerts)/width))-1) #The number of verticies in each column in order to be spread evenly
     xdel = (width-1) / (xVerts-1)
     ydel = (height-1) / (yVerts-1)
     for y in numpy.arange(0, yVerts):
@@ -32,7 +34,7 @@ def getImageColors(image): #get a list of colors from an image
 
 def drawTriangleFan(verts, colors):
     index = 0
-    result = Image.new("RGB", (original.width, original.height))
+    result = Image.new("RGB", (int(verts[len(verts)-1][0]+1), int(verts[len(verts)-1][1]+1)))
     draw = ImageDraw.Draw(result)
     for i in range(0, len(verts)-xVerts):
         if (i+1)%xVerts == 0: continue
@@ -90,4 +92,4 @@ def pullTessellation(center, verts):
 #center = round(random.random()*len(tes))
 #drawTriangleFan(pullTessellation(center, tes)).show()
 
-drawTriangleFan(randomizeTessellation(genTessellation()), getImageColors(original)).save("output." + original.filename.rpartition('.')[2], original.format)
+drawTriangleFan(randomizeTessellation(genTessellation(original.width, original.height, targetVerts)), getImageColors(original)).save("output." + original.filename.rpartition('.')[2], original.format)
