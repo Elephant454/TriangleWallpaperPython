@@ -27,9 +27,11 @@ def genTessellation():
             verts.append((x*xdel, y*ydel))
     return(verts)
 
-def drawTriangleFan(verts):
+def getImageColors(image): #get a list of colors from an image
+    return(list(original.resize([(xVerts-1)*2,yVerts-1], Image.LANCZOS).getdata()))
+
+def drawTriangleFan(verts, colors):
     index = 0
-    colors = list(original.resize([(xVerts-1)*2,yVerts-1], Image.LANCZOS).getdata())
     result = Image.new("RGB", (original.width, original.height))
     draw = ImageDraw.Draw(result)
     for i in range(0, len(verts)-xVerts):
@@ -88,4 +90,4 @@ def pullTessellation(center, verts):
 #center = round(random.random()*len(tes))
 #drawTriangleFan(pullTessellation(center, tes)).show()
 
-drawTriangleFan(randomizeTessellation(genTessellation())).save("output." + original.filename.rpartition('.')[2], original.format)
+drawTriangleFan(randomizeTessellation(genTessellation()), getImageColors(original)).save("output." + original.filename.rpartition('.')[2], original.format)
