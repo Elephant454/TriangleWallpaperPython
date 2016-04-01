@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import argparse
 import math, numpy, random
 from PIL import Image, ImageDraw
 
