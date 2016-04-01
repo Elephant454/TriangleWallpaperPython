@@ -20,6 +20,6 @@ yVerts = (round(math.sqrt((height*targetVerts)/width))-1) #The number of vertici
 
 tes = ltw.Tessellation(original.width, original.height, targetVerts)
 print(len(tes.verts))
-ltw.randomizeTessellation(tes)
+tes = ltw.randomizeTessellation(tes)
 print(len(tes.verts))
 ltw.drawTriangleFan(tes, ltw.getImageColors(original, (xVerts-1)*2, (yVerts-1))).save("output." + original.filename.rpartition('.')[2], original.format)

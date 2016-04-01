@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import math, numpy, random
+import math, numpy, random, copy
 from PIL import Image, ImageDraw
 
 class Tessellation:
@@ -32,21 +32,26 @@ def drawTriangleFan(tes, colors):
     return(result)
 
 def randomizeTessellation(tes):
+    newVerts = []
+    result = copy.deepcopy(tes)
     for i in range(0, len(tes.verts)):
         if i<tes.xVerts:
-            #tes.verts.append(tes.verts[i])
+            newVerts.append(tes.verts[i])
             True
         elif i>len(tes.verts)-tes.xVerts:
-            #tes.verts.append(tes.verts[i])
+            newVerts.append(tes.verts[i])
             True
         elif i%tes.xVerts == 0:
-            #tes.verts.append(tes.verts[i])
+            newVerts.append(tes.verts[i])
             True
         elif (i+1)%tes.xVerts == 0:
-            #tes.verts.append(tes.verts[i])
+            newVerts.append(tes.verts[i])
             True
         else:
-            tes.verts[i] = ((tes.verts[i][0] - (tes.width/(tes.xVerts-1)/2) + (tes.width/(tes.xVerts-1))*random.random()/2, tes.verts[i][1] - (tes.height/(tes.yVerts-1)/2) + (tes.height/(tes.yVerts-1))*random.random()/2))
+            newVerts.append((tes.verts[i][0] - (tes.width/(tes.xVerts-1)/2) + (tes.width/(tes.xVerts-1))*random.random()/2, tes.verts[i][1] - (tes.height/(tes.yVerts-1)/2) + (tes.height/(tes.yVerts-1))*random.random()/2))
+    result.verts = newVerts
+    return(result)
+
 
 def distance(a, b):
     return(math.sqrt(((b[0]-a[0])**2) + ((b[1]-a[1])**2)))
