@@ -103,7 +103,7 @@ def pull_tessellation(tes: Tessellation, center: tuple):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Turn an image into triangles.")
     parser.add_argument("file", type=open, help="image file to turn into triangles")
-    parser.add_argument("-v", type=int, default=2048, metavar="verticies",
+    parser.add_argument("-v", type=int, default=2048, metavar="vertices",
                         help="number of vertices that the picture should aim to have (default is 2048)")
     args = parser.parse_args()
 
