@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import argparse, math
 from PIL import Image
-from LibTriangleWallpaper import Tessellation, get_image_colors, randomizeTessellation, draw_triangle_fan
+from LibTriangleWallpaper import Tessellation, get_image_colors, randomize_tessellation, draw_triangle_fan
 
 parser = argparse.ArgumentParser(description="Turn an image into triangles.")
 parser.add_argument("file", type=open, help="image file to turn into triangles")
@@ -25,7 +25,7 @@ yVerts = (round(math.sqrt((height*targetVerts)/width))-1)
 
 tes = Tessellation(original.width, original.height, targetVerts)
 print(len(tes.vertices))
-tes = randomizeTessellation(tes)
+tes = randomize_tessellation(tes)
 print(len(tes.vertices))
 draw_triangle_fan(tes, get_image_colors(original, (xVerts - 1) * 2, (yVerts - 1))).save(
     "output." + original.filename.rpartition('.')[2], original.format)
