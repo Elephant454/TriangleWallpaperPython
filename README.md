@@ -3,8 +3,8 @@ More versatile and extensible Python port of the TriangleWallpaper wallpaper gen
 
 Before:
 
-![Before](http://i.imgur.com/2buCTp0.jpg)
+![Before](http://i.imgur.com/gstsLQ8.jpg)
 
-After:
+After (with 2048 vertices):
 
-![After](http://i.imgur.com/qIG3TKt.jpg)
+![After](http://i.imgur.com/bDj57G7.jpg)
