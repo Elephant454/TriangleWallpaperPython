@@ -70,11 +70,11 @@ def distance(a, b):
     return math.sqrt(((b[0] - a[0]) ** 2) + ((b[1] - a[1]) ** 2))
 
 
-def pull_tessellation(tes: Tessellation, center: tuple, verts: list):
+def pull_tessellation(tes: Tessellation, center: tuple):
     result = []
     for i in range(0, len(tes.vertices)):
         if i < tes.vertices:
-            result.append(verts[i])
+            result.append(tes.vertices[i])
         elif i > len(tes.vertices) - tes.x_vertices:
             result.append(tes.vertices[i])
         elif i % tes.x_vertices == 0:
@@ -85,11 +85,14 @@ def pull_tessellation(tes: Tessellation, center: tuple, verts: list):
 
             print(
                 "X: " + str(tes.vertices[i][0]) + " + (" + str(tes.vertices[center][0]) + " - " +
-                str(tes.vertices[i][0]) + ") = " + str(verts[i][0] + (verts[center][0] - verts[i][0]) / 3))
+                str(tes.vertices[i][0]) + ") = " + str(tes.vertices[i][0] +
+                                                       (tes.vertices[center][0] - tes.vertices[i][0]) / 3))
             print(
-                "Y: " + str(verts[i][1]) + " + (" + str(verts[center][1]) + " - " + str(verts[i][1]) + ") = " +
-                str(verts[i][1] + (verts[center][1] - verts[i][1]) / 3))
+                "Y: " + str(tes.vertices[i][1]) + " + (" + str(tes.vertices[center][1]) + " - " +
+                str(tes.vertices[i][1]) + ") = " + str(tes.vertices[i][1] +
+                                                       (tes.vertices[center][1] - tes.vertices[i][1]) / 3))
             result.append(
-                (verts[i][0] + (verts[center][0] - verts[i][0]), verts[i][1] + (verts[center][1] - verts[i][1])))
+                (tes.vertices[i][0] + (tes.vertices[center][0] - tes.vertices[i][0]), tes.vertices[i][1] +
+                 (tes.vertices[center][1] - tes.vertices[i][1])))
 
     return result
