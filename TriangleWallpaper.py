@@ -25,9 +25,9 @@ class Tessellation:
                 self.vertices.append((x * delta_x, y * delta_y))
 
 
-# get a list of colors from an image
-def get_image_colors(image: Image, width: float, height: float) -> list:
-    return list(image.resize([width, height], Image.LANCZOS).getdata())
+# scale an image and get a list of colors from it
+def get_image_colors(image: Image, new_width: float, new_height: float) -> list:
+    return list(image.resize([new_width, new_height], Image.LANCZOS).getdata())
 
 
 def draw_triangle_fan(tes: Tessellation, colors: list) -> Image:
@@ -46,7 +46,7 @@ def draw_triangle_fan(tes: Tessellation, colors: list) -> Image:
     return result
 
 
-def randomize_tessellation(tes):
+def randomize_tessellation(tes: Tessellation) -> Tessellation:
     new_vertices = []
     result = copy.deepcopy(tes)
     for i in range(0, len(tes.vertices)):
@@ -105,23 +105,14 @@ if __name__ == "__main__":
     parser.add_argument("file", type=open, help="image file to turn into triangles")
     parser.add_argument("-v", type=int, default=2048, metavar="vertices",
                         help="number of vertices that the picture should aim to have (default is 2048)")
-    parser.add_argument("--no-randomization", dest="randomize", action="store_false", help="don't randomize vertices")
     args = parser.parse_args()
 
     original = Image.open(args.file.name)
 
-    width = original.width
-    height = original.height
-
     # The number of vertices to aim for. The actual number may be less.
     targetVerts = args.v
 
-    # The number of vertices in each row or column in order to be spread vertices evenly
-    xVerts = (round(math.sqrt((width*targetVerts)/height))-1)
-    yVerts = (round(math.sqrt((height*targetVerts)/width))-1)
-
     tes = Tessellation(original.width, original.height, targetVerts)
-    if args.randomize:
-        tes = randomize_tessellation(tes)
-    draw_triangle_fan(tes, get_image_colors(original, (xVerts - 1) * 2, (yVerts - 1))).save(
+    tes = randomize_tessellation(tes)
+    draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.x_vertices - 1))).save(
         "output." + original.filename.rpartition('.')[2], original.format)
