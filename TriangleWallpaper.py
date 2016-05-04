@@ -105,6 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("file", type=open, help="image file to turn into triangles")
     parser.add_argument("-v", type=int, default=2048, metavar="vertices",
                         help="number of vertices that the picture should aim to have (default is 2048)")
+    parser.add_argument("--no-randomization", dest="randomize", action="store_false", help="don't randomize vertices")
     args = parser.parse_args()
 
     original = Image.open(args.file.name)
@@ -114,5 +115,7 @@ if __name__ == "__main__":
 
     tes = Tessellation(original.width, original.height, targetVerts)
     tes = randomize_tessellation(tes)
-    draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.x_vertices - 1))).save(
+    if args.randomize:
+        tes = randomize_tessellation(tes)
+    draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1))).save(
         "output." + original.filename.rpartition('.')[2], original.format)
