@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import argparse
+import ColorHelper as ch
 import copy
 import math
 import numpy
@@ -116,5 +117,16 @@ if __name__ == "__main__":
     tes = Tessellation(original.width, original.height, targetVerts)
     if args.randomize:
         tes = randomize_tessellation(tes)
-    draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1))).save(
-        "output." + original.filename.rpartition('.')[2], original.format)
+
+    colors = []
+    h = 210
+    s = 50
+    l = 60
+    variance = 5
+    for i in range(0, tes.x_vertices*2 * tes.y_vertices):
+        color = ((h - variance) + random.random() * 2*variance, 50, 60)
+        colors.append(ch.hslToRgb(color))
+
+    # image = draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1)))
+    image = draw_triangle_fan(tes, colors)
+    image.save("output." + original.filename.rpartition('.')[2], original.format)
