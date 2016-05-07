@@ -116,5 +116,5 @@ if __name__ == "__main__":
     tes = Tessellation(original.width, original.height, targetVerts)
     if args.randomize:
         tes = randomize_tessellation(tes)
-    draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1))).save(
-        "output." + original.filename.rpartition('.')[2], original.format)
+    image = draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1)))
+    image.save("output." + original.filename.rpartition('.')[2], original.format)
