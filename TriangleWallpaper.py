@@ -102,31 +102,44 @@ def pull_tessellation(tes: Tessellation, center: tuple):
 
 # if the module is ran as a script, it will take arguments and produce output
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Turn an image into triangles.")
+    parser = argparse.ArgumentParser(description="Either turn an image into triangles, or generate a triangle "
+                                                 "wallpaper from scratch.")
     parser.add_argument("-i", "--file", type=open, help="image file to turn into triangles")
     parser.add_argument("-v", type=int, default=2048, metavar="vertices",
                         help="number of vertices that the picture should aim to have (default is 2048)")
     parser.add_argument("--no-randomization", dest="randomize", action="store_false", help="don't randomize vertices")
     args = parser.parse_args()
 
-    input_image = Image.open(args.file.name)
-
     # The number of vertices to aim for. The actual number may be less.
-    targetVerts = args.v
+    target_vertices = args.v
 
-    tes = Tessellation(input_image.width, input_image.height, targetVerts)
+    if args.file is None:
+        format = "PNG"
+        extension = "png"
+        width = 640
+        height = 480
+        tes = Tessellation(width, height, target_vertices)
+        colors = []
+        h = 210
+        s = 50
+        l = 60
+        variance = 5
+        for i in range(0, tes.x_vertices*2 * tes.y_vertices):
+            color = ((h - variance) + random.random() * 2*variance, 50, 60)
+            colors.append(ch.hslToRgb(color))
+
+    else:
+        input_image = Image.open(args.file.name)
+        format = input_image.format
+        extension = input_image.filename.rpartition(".")[2]
+        width = input_image.width
+        height = input_image.height
+        tes = Tessellation(width, height, target_vertices)
+        # ((tes.x_vertices - 1) * 2) * (tes.y_vertices - 1) is the total number of triangles in the image
+        colors = get_image_colors(input_image, (tes.x_vertices - 1) * 2, tes.y_vertices -1)
+
     if args.randomize:
         tes = randomize_tessellation(tes)
 
-    colors = []
-    h = 210
-    s = 50
-    l = 60
-    variance = 5
-    for i in range(0, tes.x_vertices*2 * tes.y_vertices):
-        color = ((h - variance) + random.random() * 2*variance, 50, 60)
-        colors.append(ch.hslToRgb(color))
-
-    # image = draw_triangle_fan(tes, get_image_colors(input_image, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1)))
     image = draw_triangle_fan(tes, colors)
-    image.save("output." + input_image.filename.rpartition('.')[2], input_image.format)
+    image.save("output." + extension, format)
