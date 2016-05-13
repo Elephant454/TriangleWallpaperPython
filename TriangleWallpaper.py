@@ -109,12 +109,12 @@ if __name__ == "__main__":
     parser.add_argument("--no-randomization", dest="randomize", action="store_false", help="don't randomize vertices")
     args = parser.parse_args()
 
-    original = Image.open(args.file.name)
+    input_image = Image.open(args.file.name)
 
     # The number of vertices to aim for. The actual number may be less.
     targetVerts = args.v
 
-    tes = Tessellation(original.width, original.height, targetVerts)
+    tes = Tessellation(input_image.width, input_image.height, targetVerts)
     if args.randomize:
         tes = randomize_tessellation(tes)
 
@@ -127,6 +127,6 @@ if __name__ == "__main__":
         color = ((h - variance) + random.random() * 2*variance, 50, 60)
         colors.append(ch.hslToRgb(color))
 
-    # image = draw_triangle_fan(tes, get_image_colors(original, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1)))
+    # image = draw_triangle_fan(tes, get_image_colors(input_image, (tes.x_vertices - 1) * 2, (tes.y_vertices - 1)))
     image = draw_triangle_fan(tes, colors)
-    image.save("output." + original.filename.rpartition('.')[2], original.format)
+    image.save("output." + input_image.filename.rpartition('.')[2], input_image.format)
