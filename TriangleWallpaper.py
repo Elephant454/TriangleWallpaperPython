@@ -114,8 +114,8 @@ if __name__ == "__main__":
     target_vertices = args.v
 
     if args.file is None:
-        format = "PNG"
-        extension = "png"
+        output_format = "PNG"
+        output_extension = "png"
         width = 640
         height = 480
         tes = Tessellation(width, height, target_vertices)
@@ -130,8 +130,8 @@ if __name__ == "__main__":
 
     else:
         input_image = Image.open(args.file.name)
-        format = input_image.format
-        extension = input_image.filename.rpartition(".")[2]
+        output_format = input_image.format
+        output_extension = input_image.filename.rpartition(".")[2]
         width = input_image.width
         height = input_image.height
         tes = Tessellation(width, height, target_vertices)
@@ -142,4 +142,4 @@ if __name__ == "__main__":
         tes = randomize_tessellation(tes)
 
     image = draw_triangle_fan(tes, colors)
-    image.save("output." + extension, format)
+    image.save("output." + output_extension, output_format)
