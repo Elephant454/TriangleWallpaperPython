@@ -136,7 +136,7 @@ if __name__ == "__main__":
         height = input_image.height
         tes = Tessellation(width, height, target_vertices)
         # the total number of triangles in the image is ((tes.x_vertices - 1) * 2) * (tes.y_vertices - 1)
-        colors = get_image_colors(input_image, (tes.x_vertices - 1) * 2, tes.y_vertices -1)
+        colors = get_image_colors(input_image, (tes.x_vertices - 1) * 2, tes.y_vertices - 1)
 
     if args.randomize:
         tes = randomize_tessellation(tes)
